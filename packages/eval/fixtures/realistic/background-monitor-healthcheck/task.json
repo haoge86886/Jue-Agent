@@ -1,0 +1,34 @@
+{
+  "id": "background-monitor-healthcheck",
+  "title": "Monitor a long-running process and stop it",
+  "instruction": "Start the development server script in the background, wait until it prints the READY line, capture the output into health-report.md, then stop the background task.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "monitor",
+    "background-task"
+  ],
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "health-report.md",
+      "text": "READY port=4555"
+    },
+    {
+      "type": "tool_called",
+      "name": "monitor.start",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "task.output",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "task.stop",
+      "minCount": 1
+    }
+  ]
+}

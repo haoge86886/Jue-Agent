@@ -1,0 +1,29 @@
+{
+  "id": "todo-plan-basic",
+  "title": "Use todo for multi-step task",
+  "instruction": "This is a three-step task: change a.txt to ONE, change b.txt to TWO, then verify both. Use todo tracking while doing it.",
+  "workspace": "workspace",
+  "timeoutMs": 150000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "a.txt",
+      "text": "ONE"
+    },
+    {
+      "type": "file_contains",
+      "path": "b.txt",
+      "text": "TWO"
+    },
+    {
+      "type": "tool_called",
+      "name": "todo.create",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "todo.update",
+      "minCount": 2
+    }
+  ]
+}

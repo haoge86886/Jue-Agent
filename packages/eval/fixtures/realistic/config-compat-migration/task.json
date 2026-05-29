@@ -1,0 +1,29 @@
+{
+  "id": "config-compat-migration",
+  "title": "Config migration with backward compatibility",
+  "instruction": "The config loader must support legacy v1 config files and current v2 config files while allowing JUE_API_URL to override the URL. Implement this in production code, preserve the public return shape, and run tests.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "config",
+    "backward-compatibility"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "file_contains",
+      "path": "src/config.js",
+      "text": "apiUrl"
+    },
+    {
+      "type": "file_contains",
+      "path": "README.md",
+      "text": "v1"
+    }
+  ]
+}

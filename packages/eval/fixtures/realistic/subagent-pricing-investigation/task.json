@@ -1,0 +1,30 @@
+{
+  "id": "subagent-pricing-investigation",
+  "title": "Use explorer subagent for targeted code location",
+  "instruction": "Use an ExplorerAgent/subagent to locate where discounts are computed, then fix the pricing regression and run tests.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "subagent",
+    "search",
+    "pricing"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "tool_called",
+      "name": "subagent.invoke",
+      "minCount": 1
+    },
+    {
+      "type": "file_contains",
+      "path": "src/pricing/discounts.js",
+      "text": "/ 100"
+    }
+  ]
+}

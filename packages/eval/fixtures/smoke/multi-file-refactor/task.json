@@ -1,0 +1,28 @@
+{
+  "id": "multi-file-refactor",
+  "title": "Rename exported function and usage",
+  "instruction": "Rename function addOne to increment in src/math.ts and update src/index.ts usage. Run the provided node check mentally or with shell.",
+  "workspace": "workspace",
+  "timeoutMs": 120000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "src/math.ts",
+      "text": "function increment"
+    },
+    {
+      "type": "file_contains",
+      "path": "src/index.ts",
+      "text": "increment(1)"
+    },
+    {
+      "type": "file_not_contains",
+      "path": "src/index.ts",
+      "text": "addOne(1)"
+    },
+    {
+      "type": "command",
+      "command": "node -e \"const fs=require('fs'); const a=fs.readFileSync('src/math.ts','utf8'); const b=fs.readFileSync('src/index.ts','utf8'); if(!a.includes('increment')||!b.includes('increment(1)')) process.exit(1)\""
+    }
+  ]
+}

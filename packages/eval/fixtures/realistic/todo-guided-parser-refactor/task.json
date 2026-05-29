@@ -1,0 +1,30 @@
+{
+  "id": "todo-guided-parser-refactor",
+  "title": "Plan and verify a small parser refactor",
+  "instruction": "Before editing, create a todo plan. Then fix parseDuration so npm test passes, mark the todo items complete, and summarize the verification.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "todo",
+    "parser",
+    "verification"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "tool_called",
+      "name": "todo.create",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "todo.update",
+      "minCount": 1
+    }
+  ]
+}

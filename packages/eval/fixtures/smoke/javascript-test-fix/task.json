@@ -1,0 +1,23 @@
+{
+  "id": "javascript-test-fix",
+  "title": "Fix JavaScript logic with test",
+  "instruction": "Run node test.js, fix slugify.js, and ensure the test passes.",
+  "workspace": "workspace",
+  "timeoutMs": 150000,
+  "checks": [
+    {
+      "type": "command",
+      "command": "node test.js"
+    },
+    {
+      "type": "file_contains",
+      "path": "slugify.js",
+      "text": "toLowerCase"
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

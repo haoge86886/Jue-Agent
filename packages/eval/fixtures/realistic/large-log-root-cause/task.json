@@ -1,0 +1,29 @@
+{
+  "id": "large-log-root-cause",
+  "title": "Investigate logs before editing code",
+  "instruction": "Use the logs to identify the failing error signature, then implement diagnose(logText) so tests pass. Avoid reading unrelated generated files.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "logs",
+    "search"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "file_contains",
+      "path": "src/diagnose.js",
+      "text": "database-timeout"
+    },
+    {
+      "type": "tool_called",
+      "name": "search.text",
+      "minCount": 1
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "background-monitor-basic",
+  "title": "Use monitor for long running task",
+  "instruction": "Use monitor.start to run node server.js, read its output until tick 3 appears, then stop or confirm it ended.",
+  "workspace": "workspace",
+  "timeoutMs": 150000,
+  "checks": [
+    {
+      "type": "tool_called",
+      "name": "monitor.start",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "task.output",
+      "minCount": 1
+    }
+  ]
+}

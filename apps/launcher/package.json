@@ -1,0 +1,25 @@
+{
+  "name": "@jue/launcher",
+  "version": "0.1.0",
+  "description": "agent的统一启动入口",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "jue": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "clean": "rimraf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@jue/cli": "workspace:*",
+    "@jue/infra": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

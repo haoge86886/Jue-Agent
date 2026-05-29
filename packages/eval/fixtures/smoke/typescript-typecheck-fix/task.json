@@ -1,0 +1,24 @@
+{
+  "id": "typescript-typecheck-fix",
+  "title": "Fix a TypeScript type error",
+  "instruction": "Run npm test or npx tsc --noEmit, fix the TypeScript error in src/index.ts, and leave the project typecheck passing.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "checks": [
+    {
+      "type": "command",
+      "command": "npx tsc --noEmit",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "file_contains",
+      "path": "src/index.ts",
+      "text": ": string"
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

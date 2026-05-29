@@ -1,0 +1,34 @@
+{
+  "id": "generated-artifact-source-of-truth",
+  "title": "Fix generated output through source of truth",
+  "instruction": "The generated banner is wrong. Fix the source of truth and run the build/test flow. Do not treat dist/banner.txt as the source file.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "generated-files",
+    "build"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "file_contains",
+      "path": "src/template.js",
+      "text": "Jue Agent"
+    },
+    {
+      "type": "file_contains",
+      "path": "dist/banner.txt",
+      "text": "Welcome, Jue Agent"
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

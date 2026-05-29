@@ -1,0 +1,12 @@
+{
+  "id": "file-write-basic",
+  "title": "Create a small file",
+  "instruction": "Create a file named result.txt with exactly this content: Jue eval passed",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    { "type": "file_exists", "path": "result.txt" },
+    { "type": "file_contains", "path": "result.txt", "text": "Jue eval passed" },
+    { "type": "tool_called", "name": "file.write", "minCount": 1 }
+  ]
+}

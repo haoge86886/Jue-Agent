@@ -1,0 +1,23 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/shared-types" },
+    { "path": "./packages/skills" },
+    { "path": "./packages/infra" },
+    { "path": "./packages/utils" },
+    { "path": "./packages/config" },
+    { "path": "./packages/audit" },
+    { "path": "./packages/context" },
+    { "path": "./packages/prompting" },
+    { "path": "./packages/memory" },
+    { "path": "./packages/team" },
+    { "path": "./packages/tools" },
+    { "path": "./packages/subagent" },
+    { "path": "./packages/engine" },
+    { "path": "./packages/session" },
+    { "path": "./packages/runtime" },
+    { "path": "./packages/eval" },
+    { "path": "./apps/cli" },
+    { "path": "./apps/launcher" }
+  ]
+}

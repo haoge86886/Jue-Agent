@@ -1,0 +1,57 @@
+﻿{
+    "extends":  "../../tsconfig.base.json",
+    "compilerOptions":  {
+                            "rootDir":  "./src",
+                            "outDir":  "./dist",
+                            "composite":  true,
+                            "tsBuildInfoFile":  "./dist/.tsbuildinfo"
+                        },
+    "references":  [
+                       {
+                           "path":  "../../packages/shared-types"
+                       },
+                       {
+                           "path":  "../../packages/utils"
+                       },
+                       {
+                           "path":  "../../packages/config"
+                       },
+                       {
+                           "path":  "../../packages/infra"
+                       },
+                       {
+                           "path":  "../../packages/runtime"
+                       },
+                       {
+                           "path":  "../../packages/prompting"
+                       },
+                       {
+                           "path":  "../../packages/context"
+                       },
+                       {
+                           "path":  "../../packages/tools"
+                       },
+                       {
+                           "path":  "../../packages/memory"
+                       },
+                       {
+                           "path":  "../../packages/subagent"
+                       },
+                       {
+                           "path":  "../../packages/engine"
+                       },
+                       {
+                           "path":  "../../packages/session"
+                       },
+                       {
+                           "path":  "../../packages/audit"
+                       }
+                   ],
+    "include":  [
+                    "src/**/*"
+                ],
+    "exclude":  [
+                    "node_modules",
+                    "dist"
+                ]
+}

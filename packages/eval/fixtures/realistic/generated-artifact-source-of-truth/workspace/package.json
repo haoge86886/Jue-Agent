@@ -1,0 +1,7 @@
+{
+  "type": "commonjs",
+  "scripts": {
+    "build": "node build.js",
+    "test": "npm run build && node --test"
+  }
+}

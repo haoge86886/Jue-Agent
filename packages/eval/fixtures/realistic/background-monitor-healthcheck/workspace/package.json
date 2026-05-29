@@ -1,0 +1,6 @@
+{
+  "type": "commonjs",
+  "scripts": {
+    "start": "node scripts/dev-server.js"
+  }
+}

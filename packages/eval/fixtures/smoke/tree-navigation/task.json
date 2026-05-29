@@ -1,0 +1,19 @@
+{
+  "id": "tree-navigation",
+  "title": "Find file by tree",
+  "instruction": "Find the README under the docs tree and append a line: Verified by Jue eval.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "docs/product/README.md",
+      "text": "Verified by Jue eval."
+    },
+    {
+      "type": "tool_called",
+      "name": "fs.tree",
+      "minCount": 1
+    }
+  ]
+}

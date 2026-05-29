@@ -1,0 +1,24 @@
+{
+  "id": "text-search-fix",
+  "title": "Use text search to locate bug",
+  "instruction": "Find the BUG_TOKEN location and replace wrong-total with correct-total.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "src/deep/nested/report.txt",
+      "text": "correct-total"
+    },
+    {
+      "type": "file_not_contains",
+      "path": "src/deep/nested/report.txt",
+      "text": "wrong-total"
+    },
+    {
+      "type": "tool_called",
+      "name": "search.text",
+      "minCount": 1
+    }
+  ]
+}

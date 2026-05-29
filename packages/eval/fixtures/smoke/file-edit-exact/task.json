@@ -1,0 +1,24 @@
+{
+  "id": "file-edit-exact",
+  "title": "Patch one exact line",
+  "instruction": "In src/message.ts, change the exported message from old-value to new-value. Keep the rest unchanged.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "src/message.ts",
+      "text": "new-value"
+    },
+    {
+      "type": "file_not_contains",
+      "path": "src/message.ts",
+      "text": "old-value"
+    },
+    {
+      "type": "tool_called",
+      "name": "file.edit",
+      "minCount": 1
+    }
+  ]
+}

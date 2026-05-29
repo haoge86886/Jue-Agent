@@ -1,0 +1,24 @@
+{
+  "id": "timezone-business-day-bug",
+  "title": "Timezone-sensitive date bug",
+  "instruction": "A customer in Asia/Shanghai sees a due date from today as overdue. Fix the date handling without changing the tests, and explain the verification briefly in the final answer.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "timezone",
+    "edge-case"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

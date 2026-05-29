@@ -1,0 +1,62 @@
+{
+  "name": "@jue/shared-types",
+  "version": "0.1.0",
+  "description": "Jue Agent 跨包共享类型与 Zod Schema",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./common": {
+      "types": "./dist/common.d.ts",
+      "import": "./dist/common.js"
+    },
+    "./session": {
+      "types": "./dist/session.d.ts",
+      "import": "./dist/session.js"
+    },
+    "./context": {
+      "types": "./dist/context.d.ts",
+      "import": "./dist/context.js"
+    },
+    "./tool": {
+      "types": "./dist/tool.d.ts",
+      "import": "./dist/tool.js"
+    },
+    "./memory": {
+      "types": "./dist/memory.d.ts",
+      "import": "./dist/memory.js"
+    },
+    "./subagent": {
+      "types": "./dist/subagent.d.ts",
+      "import": "./dist/subagent.js"
+    },
+    "./recommendation": {
+      "types": "./dist/recommendation.d.ts",
+      "import": "./dist/recommendation.js"
+    },
+    "./audit": {
+      "types": "./dist/audit.d.ts",
+      "import": "./dist/audit.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

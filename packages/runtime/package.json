@@ -1,0 +1,43 @@
+{
+  "name": "@jue/runtime",
+  "version": "0.1.0",
+  "description": "运行时管理 for Jue Agent.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@jue/audit": "workspace:*",
+    "@jue/config": "workspace:*",
+    "@jue/context": "workspace:*",
+    "@jue/engine": "workspace:*",
+    "@jue/infra": "workspace:*",
+    "@jue/memory": "workspace:*",
+    "@jue/prompting": "workspace:*",
+    "@jue/session": "workspace:*",
+    "@jue/shared-types": "workspace:*",
+    "@jue/skills": "workspace:*",
+    "@jue/subagent": "workspace:*",
+    "@jue/team": "workspace:*",
+    "@jue/tools": "workspace:*",
+    "@jue/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

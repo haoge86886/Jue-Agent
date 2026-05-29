@@ -1,0 +1,28 @@
+{
+  "name": "@jue/utils",
+  "version": "0.1.0",
+  "description": "jue Agent 通用工具:日志 / 审计 / id / token 估算",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@jue/shared-types": "workspace:*",
+    "pino": "^10.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

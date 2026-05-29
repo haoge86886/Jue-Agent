@@ -1,0 +1,19 @@
+{
+  "id": "shell-output-to-file",
+  "title": "Capture command output into file",
+  "instruction": "Use shell to write the text shell-ok into output.txt.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "output.txt",
+      "text": "shell-ok"
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

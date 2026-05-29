@@ -1,0 +1,32 @@
+{
+  "name": "@jue/eval",
+  "version": "0.1.0",
+  "description": "Evaluation runner and benchmark adapters for Jue Agent",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src", "fixtures"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "smoke": "tsx src/cli.ts run --suite fixtures/smoke --out .evals/runs/smoke",
+    "run": "tsx src/cli.ts run"
+  },
+  "dependencies": {
+    "@jue/infra": "workspace:*",
+    "@jue/runtime": "workspace:*",
+    "@jue/shared-types": "workspace:*",
+    "@jue/tools": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

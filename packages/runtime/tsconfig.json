@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "composite": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
+  },
+  "references": [
+    { "path": "../audit" },
+    { "path": "../config" },
+    { "path": "../context" },
+    { "path": "../engine" },
+    { "path": "../infra" },
+    { "path": "../memory" },
+    { "path": "../prompting" },
+    { "path": "../session" },
+    { "path": "../shared-types" },
+    { "path": "../skills" },
+    { "path": "../subagent" },
+    { "path": "../team" },
+    { "path": "../tools" },
+    { "path": "../utils" }
+  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

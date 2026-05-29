@@ -1,0 +1,3 @@
+project notes
+codename: ember-river
+owner: eval

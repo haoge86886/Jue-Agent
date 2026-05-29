@@ -1,0 +1,23 @@
+{
+  "id": "command-failure-recovery",
+  "title": "Recover from failing command",
+  "instruction": "Run the failing check, inspect the failure, fix calc.js so node test.js exits successfully, then rerun the check.",
+  "workspace": "workspace",
+  "timeoutMs": 150000,
+  "checks": [
+    {
+      "type": "command",
+      "command": "node test.js"
+    },
+    {
+      "type": "file_contains",
+      "path": "calc.js",
+      "text": "return a + b"
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 2
+    }
+  ]
+}

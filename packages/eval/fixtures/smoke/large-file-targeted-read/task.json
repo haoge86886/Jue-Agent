@@ -1,0 +1,29 @@
+{
+  "id": "large-file-targeted-read",
+  "title": "Targeted edit in larger file",
+  "instruction": "In large.txt replace TARGET_LINE=replace-me with TARGET_LINE=done. Avoid rewriting unrelated lines.",
+  "workspace": "workspace",
+  "timeoutMs": 120000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "large.txt",
+      "text": "TARGET_LINE=done"
+    },
+    {
+      "type": "file_not_contains",
+      "path": "large.txt",
+      "text": "TARGET_LINE=replace-me"
+    },
+    {
+      "type": "file_contains",
+      "path": "large.txt",
+      "text": "line-0"
+    },
+    {
+      "type": "file_contains",
+      "path": "large.txt",
+      "text": "line-219"
+    }
+  ]
+}

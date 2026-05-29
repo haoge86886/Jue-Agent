@@ -1,0 +1,19 @@
+{
+  "id": "memory-write-explicit",
+  "title": "Explicit memory write",
+  "instruction": "Remember this durable user preference: eval-user prefers concise technical summaries. Use the memory tool, not file.write.",
+  "workspace": "workspace",
+  "timeoutMs": 120000,
+  "checks": [
+    {
+      "type": "tool_called",
+      "name": "memory.write",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "file.write",
+      "maxCount": 0
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "shell-command",
+  "title": "Run a simple verification command",
+  "instruction": "Use a shell command to write the current Node.js major version into node-version.txt, then stop.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    { "type": "file_exists", "path": "node-version.txt" },
+    { "type": "command", "command": "node -e \"const fs=require('fs'); const text=fs.readFileSync('node-version.txt','utf8').trim(); if (!/^\\d+/.test(text)) process.exit(1);\"" },
+    { "type": "tool_called", "name": "shell.run", "minCount": 1 }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "create-script-and-run",
+  "title": "Create script and verify output",
+  "instruction": "Create scripts/sum.js that prints 15 when run with node scripts/sum.js. Then run it.",
+  "workspace": "workspace",
+  "timeoutMs": 120000,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "scripts/sum.js"
+    },
+    {
+      "type": "command",
+      "command": "node scripts/sum.js",
+      "stdoutContains": "15"
+    },
+    {
+      "type": "tool_called",
+      "name": "file.write",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

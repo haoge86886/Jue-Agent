@@ -1,0 +1,19 @@
+{
+  "id": "subagent-explorer-basic",
+  "title": "Use explorer subagent for code location",
+  "instruction": "Use the ExplorerAgent subagent to find where subagent-target is defined, then answer with the file path.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "checks": [
+    {
+      "type": "tool_called",
+      "name": "subagent.invoke",
+      "minCount": 1
+    },
+    {
+      "type": "json_path_equals",
+      "path": "$.run.exitReason",
+      "value": "completed"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@jue/engine",
+  "version": "0.1.0",
+  "description": "核心引擎层: Agent Loop / ModelGateway / Orchestrator 接口",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@jue/shared-types": "workspace:*",
+    "@jue/utils": "workspace:*",
+    "@jue/config": "workspace:*",
+    "@jue/prompting": "workspace:*",
+    "@jue/context": "workspace:*",
+    "@jue/tools": "workspace:*",
+    "@jue/memory": "workspace:*",
+    "@jue/subagent": "workspace:*",
+    "openai": "^6.37.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

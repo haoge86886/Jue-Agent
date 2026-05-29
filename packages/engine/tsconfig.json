@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "composite": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
+  },
+  "references": [
+    { "path": "../shared-types" },
+    { "path": "../utils" },
+    { "path": "../config" },
+    { "path": "../prompting" },
+    { "path": "../context" },
+    { "path": "../tools" },
+    { "path": "../memory" },
+    { "path": "../subagent" }
+  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

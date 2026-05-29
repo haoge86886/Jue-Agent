@@ -1,0 +1,29 @@
+{
+  "id": "file-read-answer",
+  "title": "Read a file and answer with exact fact",
+  "instruction": "Read notes.txt and answer with the exact project codename only. Do not modify files.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "notes.txt",
+      "text": "codename: ember-river"
+    },
+    {
+      "type": "tool_called",
+      "name": "file.read",
+      "minCount": 1
+    },
+    {
+      "type": "tool_called",
+      "name": "file.write",
+      "maxCount": 0
+    },
+    {
+      "type": "json_path_equals",
+      "path": "$.run.exitReason",
+      "value": "completed"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "http-disabled-recovery",
+  "title": "Handle disabled network access",
+  "instruction": "Try to fetch https://example.com only if the http tool is available. If unavailable or disabled, explain the limitation and do not fail the task.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "json_path_equals",
+      "path": "$.run.exitReason",
+      "value": "completed"
+    }
+  ]
+}

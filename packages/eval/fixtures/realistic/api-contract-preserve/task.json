@@ -1,0 +1,29 @@
+{
+  "id": "api-contract-preserve",
+  "title": "Preserve API contract while fixing implementation",
+  "instruction": "Fix the user presenter to satisfy the documented API contract. Do not expose private fields and do not rename the public function.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "api-contract",
+    "privacy"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "file_not_contains",
+      "path": "src/userPresenter.js",
+      "text": "email:"
+    },
+    {
+      "type": "file_contains",
+      "path": "src/userPresenter.js",
+      "text": "active"
+    }
+  ]
+}

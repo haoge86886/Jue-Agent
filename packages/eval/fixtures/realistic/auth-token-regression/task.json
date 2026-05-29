@@ -1,0 +1,35 @@
+{
+  "id": "auth-token-regression",
+  "title": "Cross-file auth regression fix",
+  "instruction": "A regression broke authenticated requests. Investigate the auth flow, fix the smallest production code change, run npm test, and do not edit tests.",
+  "workspace": "workspace",
+  "timeoutMs": 180000,
+  "tags": [
+    "realistic",
+    "auth",
+    "cross-file",
+    "test-driven"
+  ],
+  "checks": [
+    {
+      "type": "command",
+      "command": "npm test",
+      "timeoutMs": 120000
+    },
+    {
+      "type": "file_contains",
+      "path": "src/token.js",
+      "text": "Bearer"
+    },
+    {
+      "type": "file_contains",
+      "path": "test/auth.test.js",
+      "text": "Bearer admin-token"
+    },
+    {
+      "type": "tool_called",
+      "name": "shell.run",
+      "minCount": 1
+    }
+  ]
+}

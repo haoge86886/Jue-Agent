@@ -1,0 +1,18 @@
+{
+  "id": "json-config-edit",
+  "title": "Edit JSON without breaking parse",
+  "instruction": "Update config.json: set feature.enabled to true and threshold to 7. Keep valid JSON.",
+  "workspace": "workspace",
+  "timeoutMs": 90000,
+  "checks": [
+    {
+      "type": "command",
+      "command": "node -e \"const c=require('./config.json'); if(c.feature.enabled!==true||c.feature.threshold!==7) process.exit(1)\""
+    },
+    {
+      "type": "file_contains",
+      "path": "config.json",
+      "text": "\"threshold\": 7"
+    }
+  ]
+}

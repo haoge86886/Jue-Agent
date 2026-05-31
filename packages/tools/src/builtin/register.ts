@@ -145,11 +145,11 @@ function withToolGuidance(spec: ToolSpec): ToolSpec {
 const TOOL_GUIDANCE: Record<string, { displayName?: string; description: string }> = {
   "file.read": {
     displayName: "Read File",
-    description: "Read local file content. Use it for source code, config, logs, design docs, and user-specified files. Before editing, read the relevant snippet to confirm the current state. Use offset/length for large files; do not use it to list directories or locate filenames.",
+    description: "Read local file content. Use it for source code, config, logs, design docs, and user-specified files. Before editing, read the relevant snippet to confirm the current state. If search.text returns a line number, call file.read with line and lineCount; do not guess byte offsets. Use offset/length only for byte-range reads.",
   },
   "file.write": {
     displayName: "Write File",
-    description: "Create a new file or overwrite a whole file. Use it for new config, tests, scripts, docs, or explicit full rewrites. For small edits to an existing file, prefer file.edit. Before overwrite, confirm the path and the need for overwrite=true.",
+    description: "Create a new file or overwrite a whole file. Prefer file.edit for small changes to existing files. Do not create root-level scratch files, ad-hoc test_*.py files, or temporary settings/config files to bypass a project native test setup. For validation, use the project existing test/config entrypoints or a temporary file that is cleaned up.",
   },
   "memory.write": {
     displayName: "Write Memory",
@@ -169,7 +169,7 @@ const TOOL_GUIDANCE: Record<string, { displayName?: string; description: string 
   },
   "search.text": {
     displayName: "Search Text",
-    description: "Search exact text in file contents and return line numbers/previews. Hard workflow rule: for function names, config keys, error messages, log signatures, TODO/FIXME, old implementations, or references, call search.text first, then read the hit files. Do not replace search with broad manual reading.",
+    description: "Search exact text in file contents and return line numbers/previews. After a hit, use file.read with the returned line number and a useful lineCount. Do not repeatedly search the same term after a unique hit; read the line range, then edit or change strategy.",
   },
   "shell.run": {
     displayName: "Run Command",

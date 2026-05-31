@@ -32,6 +32,8 @@ function parseRunOptions(args: string[]): EvalRunOptions {
   const timeoutMs = parseOptionalPositiveInteger(getOption(args, "--timeout-ms"), "--timeout-ms");
   const range = parseRange(getOption(args, "--range"));
   const limit = parseOptionalPositiveInteger(getOption(args, "--limit"), "--limit");
+  const sample = parseOptionalPositiveInteger(getOption(args, "--sample"), "--sample");
+  const seed = getOption(args, "--seed");
   const model = getOption(args, "--model");
   const configFile = getOption(args, "--config-file");
   return {
@@ -43,12 +45,15 @@ function parseRunOptions(args: string[]): EvalRunOptions {
     ...(timeoutMs !== undefined ? { timeoutMs } : {}),
     ...range,
     ...(limit !== undefined ? { limit } : {}),
+    ...(sample !== undefined ? { sample } : {}),
+    ...(seed ? { seed } : {}),
     ...(model ? { model } : {}),
     ...(configFile ? { configFile } : {}),
     ...(askUserPolicy === "approve" || askUserPolicy === "deny" ? { askUserPolicy } : {}),
     dryRun: args.includes("--dry-run"),
     prepareRepos: args.includes("--prepare-repos"),
     exportPredictions: args.includes("--export-predictions"),
+    force: args.includes("--force"),
   };
 }
 
@@ -97,6 +102,9 @@ function printHelp(): void {
     "  --out <dir>               Output directory, default .evals/runs/latest",
     "  --range <i-j>            Run a 1-based inclusive task range, for example 1-10",
     "  --limit <n>              Run at most n tasks after range filtering",
+    "  --sample <n>             Randomly sample n tasks after range/limit filtering",
+    "  --seed <value>           Stable seed for --sample, default is random",
+    "  --force                  Re-run tasks even when their result JSON already exists",
     "  --prepare-repos           Clone/checkout benchmark repos when tasks provide repo/baseCommit",
     "  --repo-cache-dir <path>   Git repo cache directory for --prepare-repos",
     "  --export-predictions      Write predictions.jsonl with git diff patches for SWE-bench harness",

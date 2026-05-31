@@ -32,7 +32,7 @@ function loadSuiteDirectory(dir: string): LoadedSuite {
 function loadSuiteFile(file: string, options: { benchmark?: EvalTaskFormat } = {}): EvalSuite {
   const ext = extname(file).toLowerCase();
   if (ext === ".jsonl") {
-    const tasks = readFileSync(file, "utf8")
+    const tasks = readUtf8WithoutBom(file)
       .split(/\r?\n/)
       .map((line) => line.trim())
       .filter(Boolean)
@@ -42,7 +42,7 @@ function loadSuiteFile(file: string, options: { benchmark?: EvalTaskFormat } = {
       });
     return { name: basenameForSuite(file), format: options.benchmark ?? "custom", tasks };
   }
-  const parsed = JSON.parse(readFileSync(file, "utf8")) as unknown;
+  const parsed = JSON.parse(readUtf8WithoutBom(file)) as unknown;
   if (isRecord(parsed) && Array.isArray(parsed.tasks)) {
     const suite: EvalSuite = {
       name: typeof parsed.name === "string" ? parsed.name : basenameForSuite(file),
@@ -53,6 +53,10 @@ function loadSuiteFile(file: string, options: { benchmark?: EvalTaskFormat } = {
     return suite;
   }
   return { name: basenameForSuite(file), format: "custom", tasks: [normalizeTask(parsed, dirname(file))] };
+}
+
+function readUtf8WithoutBom(file: string): string {
+  return readFileSync(file, "utf8").replace(/^\uFEFF/, "");
 }
 
 function normalizeTask(value: unknown, baseDir: string): EvalTask {

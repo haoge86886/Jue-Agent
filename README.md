@@ -1,6 +1,6 @@
 # Jue Agent
 
-Jue Agent 是一个本地运行的 TypeScript 智能体项目，目标是提供类似 Claude Code / Codex 的多端 Agent 体验。当前重点实现了 CLI 入口、统一启动层、Prompt 组装、上下文工程、工具系统、SubAgent、Session 持久化、记忆模块和基础 Team 协作能力。
+Jue Agent 是一个本地运行的 TypeScript 智能体项目，目标是提供类似 Claude Code / Codex 的多端 Agent 体验 , 特点是解耦模型调用、会话编排与前端渲染，构建 UI 形态、模型后端与工具生态三个维度均可独立演进的 AI 基础设施。当前重点实现了 CLI 入口、统一启动层、Prompt 组装、上下文工程、工具系统、SubAgent、Session 持久化和记忆模块。
 
 项目采用 monorepo 结构，核心运行逻辑拆分在 `packages/*` 中，用户入口位于 `apps/launcher`，终端界面位于 `apps/cli`。
 

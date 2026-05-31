@@ -7,6 +7,7 @@ export function renderMarkdownReport(report: EvalReport): string {
     `- total: ${report.total}`,
     `- passed: ${report.passed}`,
     `- failed: ${report.failed}`,
+    ...(report.skipped !== undefined ? [`- skippedExisting: ${report.skipped}`] : []),
     `- durationMs: ${report.finishedAt - report.startedAt}`,
     "",
     "| task | status | exit | checks | durationMs |",

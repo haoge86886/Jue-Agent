@@ -75,7 +75,8 @@ export class DefaultToolExecutor implements ToolExecutor {
   private readonly pathPermissions: PathPermissionStore | undefined;
   private readonly pathPermissionProvider: PathPermissionProvider | undefined;
   private readonly planModeStore: PlanModeStore | undefined;
-  private readonly requestToolHistory = new Map<string, Set<string>>();
+  private readonly sessionToolHistory = new Map<string, Set<string>>();
+  private readonly sessionToolCallCounts = new Map<string, Map<string, number>>();
 
   constructor(options: {
     registry: ToolRegistry;
@@ -180,7 +181,21 @@ export class DefaultToolExecutor implements ToolExecutor {
   }
 
   private checkWorkflowGuard(call: ToolCall, startedAt: number): ToolResult | undefined {
-    const history = this.historyForRequest(call.requestId);
+    const history = this.historyForSession(call.sessionId);
+    const signature = toolCallSignature(call);
+    const repeatCount = this.incrementToolCallCount(call.sessionId, signature);
+    if (repeatCount > 3) {
+      return this.normalizer.failed(call, startedAt, {
+        code: "WORKFLOW_REPEATED_TOOL_CALL",
+        message: `Repeated identical tool call blocked after ${repeatCount - 1} prior attempts: ${call.toolName}.`,
+        retriable: false,
+        details: {
+          nextStep: "Do not repeat the same tool call. Use the information already returned, read a specific file range, choose a different query/path, edit the likely fix, or explain the blocker.",
+          repeatCount,
+          toolName: call.toolName,
+        },
+      });
+    }
     if (call.toolName === "search.text") {
       history.add(call.toolName);
       return undefined;
@@ -206,11 +221,22 @@ export class DefaultToolExecutor implements ToolExecutor {
     });
   }
 
-  private historyForRequest(requestId: string): Set<string> {
-    let history = this.requestToolHistory.get(requestId);
+  private incrementToolCallCount(sessionId: string, signature: string): number {
+    let counts = this.sessionToolCallCounts.get(sessionId);
+    if (!counts) {
+      counts = new Map<string, number>();
+      this.sessionToolCallCounts.set(sessionId, counts);
+    }
+    const next = (counts.get(signature) ?? 0) + 1;
+    counts.set(signature, next);
+    return next;
+  }
+
+  private historyForSession(sessionId: string): Set<string> {
+    let history = this.sessionToolHistory.get(sessionId);
     if (!history) {
       history = new Set<string>();
-      this.requestToolHistory.set(requestId, history);
+      this.sessionToolHistory.set(sessionId, history);
     }
     return history;
   }
@@ -275,6 +301,17 @@ export class DefaultToolExecutor implements ToolExecutor {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function toolCallSignature(call: ToolCall): string {
+  return `${call.toolName}:${stableStringify(call.arguments)}`;
+}
+
+function stableStringify(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map((item) => stableStringify(item)).join(",")}]`;
+  const record = value as Record<string, unknown>;
+  return `{${Object.keys(record).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(record[key])}`).join(",")}}`;
 }
 
 function requiresSearchBeforeRead(path: string): boolean {

@@ -7,8 +7,8 @@ import type { ToolHandler, ToolHandlerResult } from "../tool-executor.js";
 
 export const shellRunToolSpec: ToolSpec = {
   name: "shell.run",
-  displayName: "执行命令",
-  description: "在沙箱中执行短生命周期本地命令。用于测试、类型检查、构建、git 查询和一次性验证；长时间运行任务请使用 monitor.start。",
+  displayName: "Run Command",
+  description: "Run a short-lived local command in the sandbox. Use for tests, typecheck, build, lint, git queries, package manager queries, and one-shot verification. Use monitor.start for long-running or streaming tasks.",
   version: "0.1.0",
   kind: "builtin",
   category: "shell",
@@ -17,11 +17,11 @@ export const shellRunToolSpec: ToolSpec = {
     additionalProperties: false,
     required: ["command"],
     properties: {
-      command: { type: "string", description: "要执行的可执行文件，如 git、npm、pnpm、node、powershell.exe" },
+      command: { type: "string", description: "Executable or shell builtin to run, such as git, pnpm, node, cmd, powershell.exe, dir, set, echo." },
       args: { type: "array", items: { type: "string" }, default: [] },
       cwd: { type: "string", default: "." },
       timeoutMs: { type: "integer", minimum: 1, default: 30000 },
-      waitMs: { type: "integer", minimum: 0, default: 0, description: "命令结束后额外等待的毫秒数，用于等待短暂异步输出或文件落盘。" },
+      waitMs: { type: "integer", minimum: 0, default: 0, description: "Extra milliseconds to wait after command exit for short async output or file flush." },
     },
   },
   outputSchema: {
@@ -39,7 +39,7 @@ export const shellRunToolSpec: ToolSpec = {
   timeoutMs: 30_000,
   retryPolicy: { maxRetries: 0, backoffMs: 0, backoffStrategy: "fixed", retryOn: [] },
   permissionScope: "workspace",
-  confirmation: { required: true, reason: "命令可能读写本地文件、启动进程或访问外部系统。", autoApproveScopes: [] },
+  confirmation: { required: true, reason: "Commands can read/write local files, start processes, or access external systems.", autoApproveScopes: [] },
   availabilityCheck: { kind: "always", envKeys: [] },
   errorMapping: [],
   tags: ["builtin", "shell", "sandbox"],
@@ -72,9 +72,8 @@ export function createShellRunHandler(options: ShellRunHandlerOptions): ToolHand
         ? {
             failure: {
               code: result.timedOut ? "COMMAND_TIMEOUT" : "COMMAND_FAILED",
-              message: `${result.stderr || result.stdout || `命令退出码 ${result.exitCode}`}\n下一步: ${result.timedOut
-                ? "如果这是长时间运行服务，改用 monitor.start；否则缩小命令范围或提高 timeoutMs 后重试。"
-                : "阅读 stdout/stderr，修正命令、参数、cwd 或代码后再运行验证；不要机械重复同一个失败命令。"}`,
+              message: `${result.stderr || result.stdout || `command exited with code ${result.exitCode}`}
+Next step: ${result.timedOut ? "If this is a long-running service, use monitor.start; otherwise narrow the command scope or increase timeoutMs before retrying." : "Read stdout/stderr, fix the command, args, cwd, or code, then verify again. Do not repeat the same failing command mechanically."}`,
               retriable: result.timedOut,
             },
           }

@@ -103,7 +103,26 @@ Examples:
 - `--range 1-10` runs the first 10 tasks.
 - `--range 101-150` runs tasks 101 through 150.
 - `--range 1-500 --limit 20` loads the first 500 tasks, then runs at most 20.
+- `--range 1-500 --sample 20 --seed smoke-a` randomly selects 20 tasks from the first 500 with a stable seed.
 - `--range 1-10 --dry-run` validates import and report generation without model calls.
+- Existing `<task-id>.json` files in `--out` are treated as completed and skipped; pass `--force` to re-run and replace them.
+- Per-task workspace preparation failures, including clone/fetch failures, are recorded as failed task results and the batch continues.
+
+Random sample example:
+
+```bash
+pnpm --filter @jue/eval run run -- \
+  --benchmark swe-bench \
+  --suite ../../.evals/benchmarks/swe-bench/tasks.jsonl \
+  --out ../../.evals/runs/swe-bench-sample-20 \
+  --range 1-500 \
+  --sample 20 \
+  --seed smoke-a \
+  --prepare-repos \
+  --repo-cache-dir ../../.evals/repo-cache \
+  --export-predictions \
+  --timeout-ms 600000
+```
 
 Then use the official SWE-bench harness to score `.evals/runs/swe-bench/predictions.jsonl`. Jue eval does not replace the official Docker/harness scoring; it produces candidate patches and local traces.
 

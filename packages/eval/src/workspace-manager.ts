@@ -45,8 +45,15 @@ export function prepareEvalWorkspace(options: PrepareWorkspaceOptions): Prepared
 function prepareRepoSource(options: { repo: string; baseCommit: string; repoCacheDir: string }): string {
   mkdirSync(options.repoCacheDir, { recursive: true });
   const repoDir = resolve(options.repoCacheDir, safeRepoDir(options.repo));
-  if (!existsSync(repoDir)) runGit(options.repoCacheDir, ["clone", repoUrl(options.repo), repoDir]);
-  runGit(repoDir, ["fetch", "--all", "--tags", "--prune"]);
+  if (!existsSync(repoDir)) {
+    try {
+      runGit(options.repoCacheDir, ["clone", repoUrl(options.repo), repoDir], 900_000);
+    } catch (error) {
+      rmSync(repoDir, { recursive: true, force: true });
+      throw error;
+    }
+  }
+  runGit(repoDir, ["fetch", "--all", "--tags", "--prune"], 600_000);
   runGit(repoDir, ["checkout", options.baseCommit]);
   runGit(repoDir, ["clean", "-fdx"]);
   return repoDir;
@@ -61,9 +68,14 @@ function safeRepoDir(repo: string): string {
   return repo.replace(/[^a-zA-Z0-9._-]+/g, "-");
 }
 
-function runGit(cwd: string, args: string[]): void {
-  const proc = spawnSync("git", args, { cwd, encoding: "utf8", timeout: 120_000 });
-  if (proc.status !== 0) throw new Error(`git ${args.join(" ")} failed in ${cwd}: ${proc.stderr || proc.stdout}`);
+function runGit(cwd: string, args: string[], timeoutMs = 120_000): void {
+  const proc = spawnSync("git", args, { cwd, encoding: "utf8", timeout: timeoutMs });
+  if (proc.status === 0) return;
+  const stdout = proc.stdout ? `\nstdout:\n${proc.stdout}` : "";
+  const stderr = proc.stderr ? `\nstderr:\n${proc.stderr}` : "";
+  const signal = proc.signal ? `\nsignal: ${proc.signal}` : "";
+  const status = proc.status === null ? "unknown" : String(proc.status);
+  throw new Error(`git ${args.join(" ")} failed in ${cwd} with status ${status}${signal}${stderr}${stdout}`);
 }
 
 function shouldCopyPath(path: string): boolean {

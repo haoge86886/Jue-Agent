@@ -45,6 +45,9 @@ export interface EvalRunOptions {
   rangeStart?: number;
   rangeEnd?: number;
   limit?: number;
+  sample?: number;
+  seed?: string;
+  force?: boolean;
   workspaceRoot?: string;
   prepareRepos?: boolean;
   repoCacheDir?: string;
@@ -101,5 +104,6 @@ export interface EvalReport {
   total: number;
   passed: number;
   failed: number;
+  skipped?: number;
   results: EvalTaskResult[];
 }

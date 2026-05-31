@@ -59,14 +59,15 @@ export class SimpleSandbox implements SandboxRunner {
         nextStep: "? cwd ?? workspace ???????",
       });
     }
-    if (this.allowedCommands.length > 0 && !this.allowedCommands.includes(input.command)) {
+    const normalizedInput = normalizeCommandForPlatform(input);
+    if (this.allowedCommands.length > 0 && !this.allowedCommands.includes(input.command) && !this.allowedCommands.includes(normalizedInput.command)) {
       throw new ToolExecutionError({
         code: "SANDBOX_COMMAND_NOT_ALLOWED",
         message: `????????: ${input.command}`,
         nextStep: "????????????????????",
       });
     }
-    const full = [input.command, ...(input.args ?? [])].join(" ");
+    const full = [normalizedInput.command, ...(normalizedInput.args ?? [])].join(" ");
     for (const pattern of this.blockedPatterns) {
       if (pattern.test(full)) {
         throw new ToolExecutionError({
@@ -76,7 +77,7 @@ export class SimpleSandbox implements SandboxRunner {
         });
       }
     }
-    return runChildProcess({ ...input, cwd });
+    return runChildProcess({ ...normalizedInput, cwd });
   }
 
   private currentAllowedRoots(): string[] {
@@ -96,7 +97,7 @@ export class UnsupportedSandbox implements SandboxRunner {
 
 function runChildProcess(input: SandboxCommand): Promise<SandboxResult> {
   return new Promise((resolve, reject) => {
-    const command = normalizeCommandForPlatform(input);
+    const command = input;
     const child = spawn(command.command, command.args ?? [], {
       cwd: command.cwd,
       env: { ...process.env, ...(command.env ?? {}) },
@@ -129,11 +130,12 @@ function runChildProcess(input: SandboxCommand): Promise<SandboxResult> {
 }
 
 const WINDOWS_CMD_SHIMS = new Set(["npm", "npx", "pnpm", "yarn", "tsx", "tsc", "vitest", "eslint", "prettier"]);
+const WINDOWS_CMD_BUILTINS = new Set(["assoc", "break", "call", "cd", "chdir", "cls", "color", "copy", "date", "del", "dir", "echo", "endlocal", "erase", "exit", "for", "ftype", "goto", "if", "md", "mkdir", "mklink", "move", "path", "pause", "popd", "prompt", "pushd", "rd", "rem", "ren", "rename", "rmdir", "set", "setlocal", "shift", "start", "time", "title", "type", "ver", "verify", "vol"]);
 
 function normalizeCommandForPlatform(input: SandboxCommand): SandboxCommand {
   if (process.platform !== "win32") return input;
   const commandName = basename(input.command).toLowerCase();
-  const usesCmdShim = WINDOWS_CMD_SHIMS.has(commandName) || commandName.endsWith(".cmd") || commandName.endsWith(".bat");
+  const usesCmdShim = WINDOWS_CMD_SHIMS.has(commandName) || WINDOWS_CMD_BUILTINS.has(commandName) || commandName.endsWith(".cmd") || commandName.endsWith(".bat");
   if (!usesCmdShim) return input;
   return {
     ...input,

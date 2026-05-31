@@ -113,7 +113,25 @@ export class ToolResultNormalizer {
   }
 
   validationRejected(call: ToolCall, startedAt: number, failure: ToolValidationFailure): ToolResult {
-    return this.rejected(call, startedAt, failure.code, failure.message, failure.nextStep);
+    const finishedAt = Date.now();
+    return {
+      id: newId("tres"),
+      callId: call.id,
+      toolName: call.toolName,
+      status: "rejected",
+      relevanceScore: call.relevanceScore,
+      tokenEstimate: 0,
+      durationMs: finishedAt - startedAt,
+      error: {
+        code: failure.code,
+        message: failure.message,
+        retriable: false,
+        details: { nextStep: failure.nextStep, issues: failure.issues, ...(failure.details ?? {}) },
+      },
+      startedAt,
+      finishedAt,
+      truncated: false,
+    };
   }
 
   private truncateLargeOutput(output: unknown): { output: unknown; truncated: boolean } {
